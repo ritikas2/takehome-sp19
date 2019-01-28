@@ -15,6 +15,12 @@ class App extends Component {
     }
   }
 
+  handleClick = () => {
+    
+    this.setState(prevState => ({shows: [...prevState.shows, {id: 4, name: this.input.value, episodes_seen: 0}]}))
+
+  }
+
   render() {
     return (
       <div className="App">
@@ -22,6 +28,15 @@ class App extends Component {
         {this.state.shows.map(x => (
           <Show id={x.id} name={x.name} episodes_seen={x.episodes_seen} />
         ))}
+
+        <button type="button" onClick={this.handleClick}>
+        <label>
+          Show Name:
+          <input type="text" ref={(input) => this.input = input} />
+        </label>
+        <input type="submit" value="Submit" />
+      </button>
+
 
       </div>
     )
