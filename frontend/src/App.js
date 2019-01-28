@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Instructions from './Instructions'
 import Show from './Show'
+import Counter from './Counter'
 
 class App extends Component {
   constructor(props) {
@@ -18,9 +19,11 @@ class App extends Component {
     return (
       <div className="App">
         <Instructions complete={true}/>
+        <Counter />
         {this.state.shows.map(x => (
           <Show id={x.id} name={x.name} episodes_seen={x.episodes_seen} />
         ))}
+
       </div>
     )
   }
