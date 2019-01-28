@@ -82,7 +82,7 @@ def add_new_show():
     new_show_data = request.get_json()
     if (new_show_data.get('name') is None):
         return create_response(status=422, message="Please provide the name of the show.")
-    elif (new_show_data.get('episodes_seen') is None):
+    if (new_show_data.get('episodes_seen') is None):
         return create_response(status=422, message="Please provide the number of episodes seen.")
 
     new_show = {
@@ -91,6 +91,19 @@ def add_new_show():
     }
 
     return create_response({"shows": db.create('shows', new_show)}, status=201, message="Show Added")
+
+@app.route("/shows/<id>", methods=['PUT'])
+def update_show_by_id(id):
+    if db.getById('shows', int(id)) is None:
+        return create_response(status=404, message="No show with this id exists")
+    update_data = request.get_json()
+    updated_values = {}
+    if (update_data.get('name') is not None):
+        updated_values["name"] = update_data.get('name')
+    if (update_data.get('episodes_seen') is not None):
+        updated_values["episodes_seen"] = update_data.get('episodes_seen')
+
+    return create_response({"shows": db.updateById('shows', int(id), updated_values)}, message="Show Updated")
 
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
