@@ -51,9 +51,12 @@ def mirror(name):
     data = {"name": name}
     return create_response(data)
 
+# MODIFIED
 @app.route("/shows", methods=['GET'])
 def get_all_shows():
     min_episodes = request.args.get('minEpisodes')
+    if (min_episodes is None):
+        return create_response({"shows": db.get('shows')})
     if (db.getShowsByMinEpisodes('shows', int(min_episodes)) == []):
         return create_response(message="No shows with more than minimum episodes entered.")
     return create_response({"shows": db.getShowsByMinEpisodes('shows', int(min_episodes))})
@@ -72,6 +75,22 @@ def get_show_by_id(id):
     if db.getById('shows', int(id)) is None:
         return create_response(status=404, message="No show with this id exists")
     return create_response({"shows": db.getById('shows', int(id))}, message="Below is the show recorded with the given id.")
+
+
+@app.route("/shows", methods=['POST'])
+def add_new_show():
+    new_show_data = request.get_json()
+    if (new_show_data.get('name') is None):
+        return create_response(status=422, message="Please provide the name of the show.")
+    elif (new_show_data.get('episodes_seen') is None):
+        return create_response(status=422, message="Please provide the number of episodes seen.")
+
+    new_show = {
+        "name": new_show_data.get('name'),
+        "episodes_seen": new_show_data.get('episodes_seen'), 
+    }
+
+    return create_response({"shows": db.create('shows', new_show)}, status=201, message="Show Added")
 
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
