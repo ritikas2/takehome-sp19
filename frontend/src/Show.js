@@ -3,10 +3,19 @@ import Counter from './Counter'
 
 class App extends Component {
   // YOUR CODE GOES BELOW
-  
   render() {
     return (
-      <div/> 
+    	<div style={{textAlign: 'left'}}>
+    	<br />
+      	<label 
+      		style={{fontSize: '1.5em', display: 'block'}}
+      	>
+			NAME = {this.props.name}
+			<Counter episodes_seen={this.props.episodes_seen} />
+
+		</label>
+      	
+      </div>
     )
   }
 }
