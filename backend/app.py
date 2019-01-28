@@ -40,7 +40,6 @@ def create_response(
 ~~~~~~~~~~~~ API ~~~~~~~~~~~~
 """
 
-
 @app.route("/")
 def hello_world():
     return create_response({"content": "hello world!"})
